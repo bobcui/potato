@@ -1,0 +1,28 @@
+{
+  "development":{
+    "potato": [{
+        "id": "potato-1", 
+        "host": "127.0.0.1",
+        "port": 4001,
+        "clientHost": "0.0.0.0",
+        "clientPort": 14001, 
+        "frontend": true,
+        "args": ["--max-old-space-size=2048", "--nouse-idle-notification", "--expose-gc"]
+      }
+    ],
+    "mysql": [{
+        "id": "mysql-1", 
+        "host": "127.0.0.1",
+        "port": 3011,
+        "args": ["--max-old-space-size=8192", "--nouse-idle-notification", "--expose-gc"]
+      }
+    ],
+    "redis": [{
+        "id": "redis-1", 
+        "host": "127.0.0.1",
+        "port": 3021,
+        "args": ["--max-old-space-size=8192", "--nouse-idle-notification", "--expose-gc"]
+      }
+    ]
+  }
+}

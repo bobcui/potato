@@ -1,0 +1,9 @@
+{
+  "name":"parallel-potato",
+  "version":"0.0.1",
+  "private":false,
+  "dependencies":{
+    "pomelo": "https://github.com/bobcui/pomelo.git#master",
+    "pomelo-logger": "https://github.com/bobcui/pomelo-logger.git#master"
+  }
+}
