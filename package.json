@@ -4,6 +4,8 @@
   "private":false,
   "dependencies":{
     "pomelo": "https://github.com/bobcui/pomelo.git#master",
-    "pomelo-logger": "https://github.com/bobcui/pomelo-logger.git#master"
+    "pomelo-logger": "https://github.com/bobcui/pomelo-logger.git#master",
+    "mysql": "~2.11.1",
+    "lodash": "~4.13.1"
   }
 }

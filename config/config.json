@@ -1,0 +1,15 @@
+{
+  "development":  {        
+    "ssh.params" : ["-l", "huomao", "-p", "22"],
+    "mysql"      : {
+      "host"              : "127.0.0.1",
+      "user"              : "root",
+      "password"          : "",
+      "connectionLimit"   : 10,    
+      "waitForConnections": true,
+      "acquireTimeout"    : 200,
+      "queryTimeout"      : 500,
+      "queueLimit"        : 0
+    }
+  }
+}

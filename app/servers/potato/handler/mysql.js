@@ -6,6 +6,6 @@ var Parallel = function(app) {
   this.app = app
 }
 
-Parallel.prototype.find = function(msg, session, next) {
-  next(null, {})
+Mysql.prototype.query = function(msg, session, next) {
+  next(null, msg)
 }

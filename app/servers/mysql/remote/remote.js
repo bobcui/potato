@@ -6,6 +6,6 @@ var Remote = function(app) {
   this.app = app
 }
 
-Remote.prototype.find = function(ids, cb) {
+Remote.prototype.query = function(ids, cb) {
   cb(null, {})
 }

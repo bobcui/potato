@@ -6,7 +6,7 @@ app.set('name', 'parallel-potato')
 
 app.configure('all', 'potato', function(){
   app.set('connectorConfig', {
-    connector : pomelo.connectors.hybridconnector
+    connector : pomelo.connectors.httpconnector
   })
 })
 
