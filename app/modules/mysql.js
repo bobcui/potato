@@ -81,8 +81,8 @@ Mysql.prototype.query = function(sql, values, timeout, cb) {
     queryStats.statTime(time, sql, values)
 
     if (!!err) {      
-      queryTotalStats.incrError()
-      queryStats.incrError()
+      queryTotalStats.onError(err.code)
+      queryStats.onError(err.code)
       logger.error('query error. sql=[%s] values=%j err=%j errmsg=[%s]', sql, values, err, err.toString())
     }
     fun.invokeCallback(cb, err, rows, fields)
@@ -116,8 +116,9 @@ Mysql.prototype._updateConfig = function() {
 }
 
 var MysqlQueryStats = function() {
+  this.createTime = Date.now()
   this.count = 0
-  this.error = 0
+  this.error = {}
   this.timeTotal = 0
   this.timeMax = 0
   this.timeMaxSql = this.timeMaxValues = null
@@ -128,8 +129,13 @@ MysqlQueryStats.prototype.incrCount = function() {
   this.count ++
 }
 
-MysqlQueryStats.prototype.incrError = function() {
-  this.error ++
+MysqlQueryStats.prototype.onError = function(err) {
+  if (_.isNil(this.error[err])) {
+    this.error[err] = 1
+  }
+  else {
+    this.error[err]++
+  }
 }
 
 MysqlQueryStats.prototype.statTime = function(time, sql, values) {
@@ -146,6 +152,7 @@ MysqlQueryStats.prototype.statTime = function(time, sql, values) {
 
 MysqlQueryStats.prototype.getInfo = function() {
   return {
+    statTime: Math.round((Date.now()-this.createTime)/1000),
     count: this.count,
     error: this.error,
     timeTotal: this.timeTotal,
