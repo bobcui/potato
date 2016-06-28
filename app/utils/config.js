@@ -24,7 +24,6 @@ exp.init = function(environment, opts) {
   }
 
   console.log('load config file %s mtime=%s env=%s', path, mtime, env)
-  console.log(config)
 
   timer = setInterval(check, checkSec*1000)
 }
@@ -65,7 +64,6 @@ var reload = function() {
           throw new Error('reload config is null')
         }
         console.log('reload config file %s mtime=%s env=%s', path, mtime, env)
-        console.log(config)
       }
       catch (e) {
         console.error('reload config file %s failed mtime=%s env=%s err=%s', path, mtime, env, e.stack)

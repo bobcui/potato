@@ -3,31 +3,11 @@
     {
       "type": "file",
       "filename": "./logs/${opts:serverId}.log",
-      "maxLogSize": 10485760,
+      "maxLogSize": 104857600,
       "layout": {
         "type": "colored"
       }, 
       "backups": 5
-    },
-    {
-      "type": "file",
-      "filename": "./logs/rpc-log.log",
-      "maxLogSize": 10485760,
-      "layout": {
-        "type": "colored"
-      },
-      "backups": 5,
-      "category":"rpc-log"
-    },
-    {
-      "type": "file",
-      "filename": "./logs/forward-log.log",
-      "maxLogSize": 10485760,
-      "layout": {
-        "type": "colored"
-      },
-      "backups": 5,
-      "category":"forward-log"
     },
     {
       "type": "file",
@@ -36,19 +16,9 @@
       "layout": {
         "type": "colored"
       },
-      "backups": 5,
+      "backups": 1,
       "category":"crash-log"
     },
-    {
-      "type": "file",
-      "filename": "./logs/console.log",
-      "maxLogSize": 10485760,
-      "layout": {
-        "type": "colored"
-      },
-      "backups": 5,
-      "category":"console"
-    },    
     {
       "type": "console"
     }
@@ -56,8 +26,11 @@
 
   "levels": {
     "[all]": "DEBUG",
-    "rpc-log": "ERROR",
-    "forward-log": "ERROR"
+    "handler-log": "WARN",
+    "rpc-log": "WARN",
+    "forward-log": "WARN",
+    "pomelo": "INFO",    
+    "console": "WARN"
   },
 
   "replaceConsole": true,

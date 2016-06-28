@@ -1,15 +1,40 @@
 var pomelo = require('pomelo')
-var config = require('./app/utils/config')
-
 var app = pomelo.createApp()
-config.init(app.get('env'), {path: './config/config.json'})
 
-app.registerBeforeStartupFunc(function(self, cb){  
+app.configure(function(){
+  var config = require('./app/utils/config')
   config.init(app.get('env'), {path: './config/config.json'})
-  cb()
-})
-app.registerBeforeShutdownFunc(function(){
-  config.fini()
+  app.registerBeforeShutdownFunc(function(){
+    config.fini()
+  })
+
+  app.set('config', config, true)
+  app.set('ssh_config_params', config.get('sshParams'))
+
+  app.set('proxyConfig', {
+    timeout: 10000,
+    // bufferMsg: true,
+    // interval: 30
+  })
+  app.set('remoteConfig', {
+    // bufferMsg: true,
+    // interval: 30,
+    // 
+    // in experiment
+    // handleEnqueue: false,  
+    // handleInterval: 30,
+    // handleCountOnce: 300,
+    // msgMaxPriority: 5
+  })
+  app.set('serverConfig', {
+    // // in experiment
+    // handleEnqueue: false,        
+    // handleInterval: 30,
+    // handleCountOnce: 300
+  })
+
+  var handlerLogFilter = require('./app/filters/handlerLogFilter')
+  app.filter(handlerLogFilter(app))
 })
 
 app.configure('all', 'potato', function(){
@@ -28,7 +53,7 @@ app.configure('all', 'mysql', function(){
   app.registerBeforeStartupFunc(function(self, cb){
     var MysqlClass = require('./app/modules/mysql')
     var mysql = new MysqlClass()
-    mysql.init(config)
+    mysql.init(self.config)
     app.set('mysql', mysql, true)
     cb()
   })
@@ -44,5 +69,5 @@ app.configure('all', 'redis', function(){
 app.start()
 
 process.on('uncaughtException', function (err) {
-  console.error(' Caught exception: ' + err.stack)
+  console.error('uncaughtException err=%j stack=%s', err, err.stack)
 })
