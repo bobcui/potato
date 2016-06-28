@@ -4,6 +4,7 @@ module.exports = function(app) {
 
 var Remote = function(app) {
   this.app = app
+  this.mysql = app.mysql
 }
 
 Remote.prototype.query = function(ids, cb) {

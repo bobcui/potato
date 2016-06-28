@@ -1,11 +1,16 @@
 {
-  "name":"parallel-potato",
+  "name":"potato",
   "version":"0.0.1",
   "private":false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bobcui/potato.git"
+  },
   "dependencies":{
     "pomelo": "https://github.com/bobcui/pomelo.git#master",
     "pomelo-logger": "https://github.com/bobcui/pomelo-logger.git#master",
     "mysql": "~2.11.1",
-    "lodash": "~4.13.1"
+    "lodash": "~4.13.1",
+    "async": "~0.2.5"
   }
 }

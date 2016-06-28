@@ -3,7 +3,10 @@ var mysqlApi = require('mysql')
 var logger = require('pomelo-logger').getLogger('mysql', __filename, 'pid:'+process.pid)
 var fun = require('../utils/fun')
 
-var Mysql = module.exports = function() {}
+module.exports = Mysql
+
+function Mysql() {
+}
 
 Mysql.prototype.init = function(config) {
   this.config = config
@@ -19,7 +22,7 @@ Mysql.prototype.init = function(config) {
   pool.on('enqueue', function() {
     logger.debug('query enqueued. queue=%d connection=%d', pool._connectionQueue.length, pool._allConnections.length)
   })
-
+  
   logger.debug('mysql init [%s@%s]', config.get('mysql').user, config.get('mysql').host)
 }
 
@@ -36,14 +39,26 @@ Mysql.prototype.fini = function() {
 }
 
 Mysql.prototype.query = function(sql, values, timeout, cb) {
+
+  if (!sql) {
+    console.log(argument)
+    throw new Error()
+  }
+
+  // unshift if values not exists
   if (!_.isArray(values)) {
     cb = timeout
     timeout = values
     values = []
   }
 
-  if (!_.isNumber(timeout)) {
+  // unshift if timeout not exists
+  if (_.isFunction(timeout)) {
     cb = timeout
+    timeout = null
+  }
+
+  if (!_.isNumber(timeout)) {
     timeout = this.config.get('mysql').queryTimeout
   }
 
@@ -67,8 +82,8 @@ Mysql.prototype.query = function(sql, values, timeout, cb) {
 
     if (!!err) {      
       queryTotalStats.incrError()
-      queryStats.incrError()            
-      logger.error('query error. sql=[%s] values=%j error=[%s]', sql, values, err.toString())
+      queryStats.incrError()
+      logger.error('query error. sql=[%s] values=%j err=%j errmsg=[%s]', sql, values, err, err.toString())
     }
     fun.invokeCallback(cb, err, rows, fields)
   })
@@ -88,7 +103,7 @@ Mysql.prototype.getInfo = function() {
   }
 }
 
-Mysql.prototype.clearQueryStats = function() {
+Mysql.prototype.clearStats = function() {
   this.queryStats = new MysqlQueryStats()
 }
 
