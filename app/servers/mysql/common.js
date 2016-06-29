@@ -26,6 +26,11 @@ exp.query = function(mysql, sql, value, timeout, cb) {
 //   }
 // })
 exp.queryMultiValue = function(mysql, sql, values, timeout, cb) {
+  if (_.isNil(values) || _.isArray(values)) {
+    cb(new Error(), {err:'MISSING_VALUES'})
+    return
+  }
+
   var funcs = {}
   _.each(values, function(value, key) {
     funcs[key] = function(cb) {

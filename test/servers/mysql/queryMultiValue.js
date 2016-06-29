@@ -39,6 +39,11 @@ async.series([
     }, cb)
   },
   function(cb) {
+    common.makeMysqlRequest('mysql.handler.queryMultiValue', {
+      sql: 'SELECT SLEEP(1)',
+    }, cb)
+  },  
+  function(cb) {
     common.makeMysqlRequest('mysql.handler.query', {
       sql: 'DROP DATABASE IF EXISTS ??',
       values: ['mysqltest'],
