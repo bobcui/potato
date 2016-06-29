@@ -1,4 +1,6 @@
 var fs = require('fs')
+var logger = require('pomelo-logger').getLogger('config', __filename, 'pid:'+process.pid)
+
 var exp = module.exports
 
 var CONFIG_PATH = '../../config/config.json'
@@ -23,13 +25,14 @@ exp.init = function(environment, opts) {
     throw new Error('load config file '+ path + ' failed env=' + env)
   }
 
-  console.log('load config file %s mtime=%s env=%s', path, mtime, env)
-
   timer = setInterval(check, checkSec*1000)
+  logger.debug('config init file=%s mtime=%s env=%s', path, mtime, env)
 }
 
-exp.fini = function() {
+exp.fini = function(cb) {
+  logger.debug('config fini')
   clearInterval(timer)
+  cb(null)
 }
 
 exp.get = function(property) {
@@ -39,7 +42,7 @@ exp.get = function(property) {
 var check = function() {
   fs.stat(path, function(err, stats){
     if (!!err) {
-      console.error('stat config file %s fail err=%s', path, err.stack)
+      logger.error('stat config file %s fail err=%s', path, err.stack)
     }
     else {
       var nowMTime = stats.mtime.getTime()
@@ -54,7 +57,7 @@ var check = function() {
 var reload = function() {
   fs.readFile(path, function(err, data) {
     if (!!err) {
-      console.error('read config file %s fail err=%s', path, err.stack)
+      logger.error('read config file %s fail err=%s', path, err.stack)
     }
     else {
       try {
@@ -63,10 +66,10 @@ var reload = function() {
         if (!config) {
           throw new Error('reload config is null')
         }
-        console.log('reload config file %s mtime=%s env=%s', path, mtime, env)
+        logger.debug('reload config file %s mtime=%s env=%s', path, mtime, env)
       }
       catch (e) {
-        console.error('reload config file %s failed mtime=%s env=%s err=%s', path, mtime, env, e.stack)
+        logger.error('reload config file %s failed mtime=%s env=%s err=%s', path, mtime, env, e.stack)
       }
     }
   })

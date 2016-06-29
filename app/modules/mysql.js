@@ -26,7 +26,7 @@ Mysql.prototype.init = function(config) {
   logger.debug('mysql init [%s@%s]', config.get('mysql').user, config.get('mysql').host)
 }
 
-Mysql.prototype.fini = function() {
+Mysql.prototype.fini = function(cb) {
   var config = this.config
   this.pool.end(function(err){
     if (!!err) {
@@ -35,11 +35,11 @@ Mysql.prototype.fini = function() {
     else {
       logger.debug('mysql fini [%s@%s]', config.get('mysql').user, config.get('mysql').host)
     }
+    cb(null)
   })
 }
 
 Mysql.prototype.query = function(sql, values, timeout, cb) {
-
   if (!sql) {
     console.log(argument)
     throw new Error()

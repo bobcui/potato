@@ -4,8 +4,8 @@ var app = pomelo.createApp()
 app.configure(function(){
   var config = require('./app/utils/config')
   config.init(app.get('env'), {path: './config/config.json'})
-  app.registerBeforeShutdownFunc(function(){
-    config.fini()
+  app.registerBeforeShutdownFunc(function(self, cb){
+    config.fini(cb)
   })
 
   app.set('config', config, true)
@@ -55,10 +55,10 @@ app.configure('all', 'mysql', function(){
     var mysql = new MysqlClass()
     mysql.init(self.config)
     app.set('mysql', mysql, true)
-    cb()
+    cb(null)
   })
-  app.registerBeforeShutdownFunc(function(){
-    mysql.fini()
+  app.registerBeforeShutdownFunc(function(self, cb){
+    self.mysql.fini(cb)
   })
 })
 
