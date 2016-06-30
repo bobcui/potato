@@ -11,6 +11,11 @@ var Handler = function(app) {
 }
 
 Handler.prototype.query = function(req, session, cb) {
+  if (_.isNil(req.serverId)) {
+    cb(null, {err:'MISSING_SERVERID'})
+    return
+  }
+
   this.app.rpc.mysql.remote.query.toServer(req.serverId, req.sql, req.values, req.timeout, function(err, result){
     if (!!err) {
       logger.error('mysql.remote.query error. serverId=%s err=%s', req.serverId, err.stack)
@@ -43,10 +48,14 @@ Handler.prototype.queryMultiValue = function(req, session, cb) {
   var app = this.app,
     sql = req.sql,
     timeout = req.timeout,
-    values = req.values,
+    values = req.values || {},
     serverIds = req.serverIds,
     serverValues = {}
 
+  if (_.isEmpty(serverIds)) {
+    cb(null, {err:'MISSING_SERVERID'})
+    return    
+  }
 
   // serverValues: {
   //   serverId1: {
@@ -59,11 +68,11 @@ Handler.prototype.queryMultiValue = function(req, session, cb) {
     if (_.isNil(serverValues[serverId])) {
       serverValues[serverId] = {}
     }    
-    serverValues[serverId][key] = values[key]
+    serverValues[serverId][key] = values[key] || []
   })
 
   var funcs = {}
-  _.each(serverValues, function(serverId, serverValue){
+  _.each(serverValues, function(serverValue, serverId){
     funcs[serverId] = function(callback) {
       app.rpc.mysql.remote.queryMultiValue.toServer(serverId, sql, serverValue, timeout, function(err, result){
         if (!!err) {

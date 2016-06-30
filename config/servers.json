@@ -3,9 +3,9 @@
     "potato": [{
         "id": "potato-1", 
         "host": "127.0.0.1",
-        "port": 4001,
+        "port": 3010,
         "clientHost": "0.0.0.0",
-        "clientPort": 14001, 
+        "clientPort": 13010, 
         "frontend": true,
         "args": ["--max-old-space-size=2048", "--nouse-idle-notification", "--expose-gc"]
       }
@@ -13,9 +13,9 @@
     "mysql": [{
         "id": "mysql-1", 
         "host": "127.0.0.1",
-        "port": 3011,
+        "port": 3020,
         "clientHost": "0.0.0.0",
-        "clientPort": 13011, 
+        "clientPort": 13020, 
         "frontend": true,
         "args": ["--max-old-space-size=8192", "--nouse-idle-notification", "--expose-gc"]
       }
@@ -23,7 +23,7 @@
     "redis": [{
         "id": "redis-1", 
         "host": "127.0.0.1",
-        "port": 3021,
+        "port": 3030,
         "args": ["--max-old-space-size=8192", "--nouse-idle-notification", "--expose-gc"]
       }
     ]

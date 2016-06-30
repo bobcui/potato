@@ -33,6 +33,10 @@ module.exports.makeHttpRequest = function(host, port, route, body, cb) {
   req.end()
 }
 
+module.exports.makePotatoRequest = function(route, body, cb) {
+  module.exports.makeHttpRequest('127.0.0.1', 13010, route, body, cb)
+}
+
 module.exports.makeMysqlRequest = function(route, body, cb) {
-  module.exports.makeHttpRequest('127.0.0.1', 13011, route, body, cb)
+  module.exports.makeHttpRequest('127.0.0.1', 13020, route, body, cb)
 }
