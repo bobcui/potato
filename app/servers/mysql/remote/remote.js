@@ -27,5 +27,5 @@ Remote.prototype.getInfo = function(req, cb) {
 
 Remote.prototype.clearStats = function(req, cb) {
   this.mysql.clearStats()
-  cb()
+  cb(null, true)
 }

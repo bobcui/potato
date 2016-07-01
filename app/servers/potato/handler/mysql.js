@@ -206,9 +206,75 @@ Handler.prototype.queryMultiSql = function(req, session, cb) {
 }
 
 Handler.prototype.getInfo = function(req, session, cb) {
-  this.app.rpc.mysql.remote.getInfo(req, cb)
+  if (_.isEmpty(req.serverId)) {
+    cb(null, {err:'INVALID_PARAM_SERVERID'})
+    return    
+  }
+
+  var app = this.app
+  var serverId = req.serverId
+  var funcs = {}
+
+  if (!_.isArray(serverId)) {
+    if (serverId === '*') {
+      serverId = []
+      _.each(app.getServersByType('mysql'), function(mysql){
+          serverId.push(mysql.id)
+      })
+    }
+    else {
+      serverId = [serverId]
+    }
+  }
+
+  _.each(serverId, function(sId){
+    funcs[sId] = function(callback){
+      app.rpc.mysql.remote.getInfo.toServer(sId, {}, function(err, result){
+        if (!!err) {
+          logger.error('mysql.remote.getInfo error. serverId=%s err=%s', serverId, err.stack)
+          result = {}
+        }        
+        callback(null, result)
+      })
+    }
+  })
+
+  async.parallel(funcs, cb)
 }
 
 Handler.prototype.clearStats = function(req, session, cb) {
-  this.app.rpc.mysql.remote.clearStats(req, cb)
+  if (_.isEmpty(req.serverId)) {
+    cb(null, {err:'INVALID_PARAM_SERVERID'})
+    return    
+  }
+
+  var app = this.app
+  var serverId = req.serverId
+  var funcs = {}
+
+  if (!_.isArray(serverId)) {
+    if (serverId === '*') {
+      serverId = []
+      _.each(app.getServersByType('mysql'), function(mysql){
+          serverId.push(mysql.id)
+      })
+    }
+    else {
+      serverId = [serverId]
+    }
+  }
+
+  _.each(serverId, function(sId){
+    funcs[sId] = function(callback){
+      app.rpc.mysql.remote.clearStats.toServer(sId, {}, function(err, result){
+        if (!!err) {
+          logger.error('mysql.remote.clearStats error. serverId=%s err=%s', serverId, err.stack)
+          result = false
+        }        
+        callback(null, result)
+      })
+    }
+  })
+
+  async.parallel(funcs, cb)
 }
