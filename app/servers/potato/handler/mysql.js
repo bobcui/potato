@@ -11,8 +11,8 @@ var Handler = function(app) {
 }
 
 Handler.prototype.query = function(req, session, cb) {
-  if (_.isNil(req.serverId)) {
-    cb(null, {err:'MISSING_SERVERID'})
+  if (_.isEmpty(req.serverId)) {
+    cb(null, {err:'INVALID_PARAM_SERVERID'})
     return
   }
 
@@ -38,11 +38,14 @@ Handler.prototype.query = function(req, session, cb) {
 //   }
 // }
 // res: {
-//   key1: {
-//     err:
-//     result:
+//   err:
+//   result: {
+//     key1: {
+//       err:
+//       result:
+//     }
+//     key2: ...
 //   }
-//   key2: ...
 // }
 Handler.prototype.queryMultiValue = function(req, session, cb) {
   var app = this.app,
@@ -53,7 +56,7 @@ Handler.prototype.queryMultiValue = function(req, session, cb) {
     serverValues = {}
 
   if (_.isEmpty(serverIds)) {
-    cb(null, {err:'MISSING_SERVERID'})
+    cb(null, {err:'INVALID_PARAM_SERVERID'})
     return    
   }
 
@@ -105,8 +108,101 @@ Handler.prototype.queryMultiValue = function(req, session, cb) {
   })
 }
 
+// req: {
+//   sqls: {
+//     sqlKey1: {
+//       sql:
+//       timeout:
+//       values: {
+//         vKey1: []
+//         vKey2: ...
+//       }
+//       serverIds: {
+//         vKey1: serverId
+//         vKey2: ...          
+//       }
+//     }
+//     sqlKey2: ...
+//   }
+// }
+// cb: {
+//   err:
+//   result: {
+//     sqlKey1: {
+//       vKey1: {err:, result:}
+//       vKey2: ...
+//     }
+//     sqlKey2: ...
+//   }
+// }
+// 
 Handler.prototype.queryMultiSql = function(req, session, cb) {
-  this.app.rpc.mysql.remote.queryMultiSql(this.mysql, req.sqls, cb)
+  if (_.isEmpty(req.sqls)) {
+    cb(null, {err:'INVALID_PARAM_SQLS'})
+    return    
+  }
+
+  var app = this.app
+
+  // serverSqls: {
+  //   serverId1: {
+  //     sqlKey1: {
+  //       sql: 
+  //       timeout:
+  //       values: {
+  //         vKey1: [],
+  //         vKey2: ...
+  //       }
+  //     }
+  //     sqlKey2: ...
+  //   }
+  //   serverId2: ...
+  // }
+  var serverSqls = {}
+  _.each(req.sqls, function(sqlValue, sqlKey){
+    _.each(sqlValue.serverIds, function(serverId, vKey){
+      if (_.isNil(serverSqls[serverId])) {
+        serverSqls[serverId] = {}
+      }
+      if (_.isNil(serverSqls[serverId][sqlKey])) {
+        serverSqls[serverId][sqlKey] = {
+          sql: sqlValue.sql,
+          timeout: sqlValue.timeout,
+          values: {}
+        }
+      }
+      if (!_.isNil(sqlValue.values)) {
+        serverSqls[serverId][sqlKey].values[vKey] = sqlValue.values[vKey]
+      }
+    })
+  })
+
+  var funcs = {}
+  _.each(serverSqls, function(sqls, serverId){
+    funcs[serverId] = function(callback) {
+      app.rpc.mysql.remote.queryMultiSql.toServer(serverId, sqls, function(err, result){
+        if (!!err) {
+          logger.error('mysql.remote.queryMultiSql error. serverId=%s err=%s', serverId, err.stack)
+          result = {}
+          _.each(sqls[serverId], function(sqlValue, sqlKey){
+            result[sqlKey] = {}
+            _.each(sqlValue, function(value, valueKey){
+              result[sqlKey][valueKey] = {err:'INTERNAL_SERVER_ERROR'}
+            })
+          })
+        }
+        callback(null, result)
+      })
+    }
+  })
+
+  async.parallel(funcs, function(err, results){
+    var finalResults = {}
+    _.each(results, function(result){
+      finalResults = _.merge(finalResults, result)
+    })
+    cb(null, finalResults)
+  })
 }
 
 Handler.prototype.getInfo = function(req, session, cb) {

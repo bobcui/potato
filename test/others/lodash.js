@@ -16,3 +16,7 @@ var ages = {
 };
 
 console.log(_.merge(users, ages))
+
+_.each([1, 2, 3], function(v, k){
+  console.log(k, v)
+})

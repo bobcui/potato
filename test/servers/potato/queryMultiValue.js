@@ -28,8 +28,8 @@ async.series([
       },
       serverIds: {
         'bob': 'mysql-1',
-        'naomi': 'mysql-1',
-        'naomi': 'mysql-1',
+        'naomi': 'mysql-2',
+        'leo': 'mysql-1',
       },
       timeout: 100,
     }, cb)
@@ -44,8 +44,8 @@ async.series([
       },
       serverIds: {
         'bob': 'mysql-1',
-        'naomi': 'mysql-1',
-        'naomi': 'mysql-1',
+        'naomi': 'mysql-2',
+        'leo': 'mysql-2',
       },      
       timeout: 100,
     }, cb)

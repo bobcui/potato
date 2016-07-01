@@ -40,11 +40,6 @@ Mysql.prototype.fini = function(cb) {
 }
 
 Mysql.prototype.query = function(sql, values, timeout, cb) {
-  if (!sql) {
-    console.log(argument)
-    throw new Error()
-  }
-
   // unshift if values not exists
   if (!_.isArray(values)) {
     cb = timeout
