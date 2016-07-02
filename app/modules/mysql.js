@@ -98,6 +98,10 @@ Mysql.prototype.getInfo = function() {
   }
 }
 
+Mysql.prototype.getStats = function() {
+  return this.queryStats.getInfo()
+}
+
 Mysql.prototype.clearStats = function() {
   this.queryStats = new MysqlQueryStats()
 }

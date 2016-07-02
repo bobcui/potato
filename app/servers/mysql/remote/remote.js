@@ -25,6 +25,10 @@ Remote.prototype.getInfo = function(req, cb) {
   cb(null, this.mysql.getInfo())
 }
 
+Remote.prototype.getStats = function(req, cb) {
+  cb(null, this.mysql.getStats())
+}
+
 Remote.prototype.clearStats = function(req, cb) {
   this.mysql.clearStats()
   cb(null, true)

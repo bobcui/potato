@@ -25,6 +25,10 @@ Handler.prototype.getInfo = function(req, session, cb) {
   cb(null, this.mysql.getInfo())
 }
 
+Handler.prototype.getStats = function(req, session, cb) {
+  cb(null, this.mysql.getStats())
+}
+
 Handler.prototype.clearStats = function(req, session, cb) {
   this.mysql.clearStats()
   cb(null, true)

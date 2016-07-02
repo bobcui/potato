@@ -242,6 +242,43 @@ Handler.prototype.getInfo = function(req, session, cb) {
   async.parallel(funcs, cb)
 }
 
+Handler.prototype.getStats = function(req, session, cb) {
+  if (_.isEmpty(req.serverId)) {
+    cb(null, {err:'INVALID_PARAM_SERVERID'})
+    return    
+  }
+
+  var app = this.app
+  var serverId = req.serverId
+  var funcs = {}
+
+  if (!_.isArray(serverId)) {
+    if (serverId === '*') {
+      serverId = []
+      _.each(app.getServersByType('mysql'), function(mysql){
+          serverId.push(mysql.id)
+      })
+    }
+    else {
+      serverId = [serverId]
+    }
+  }
+
+  _.each(serverId, function(sId){
+    funcs[sId] = function(callback){
+      app.rpc.mysql.remote.getStats.toServer(sId, {}, function(err, result){
+        if (!!err) {
+          logger.error('mysql.remote.getStats error. serverId=%s err=%s', serverId, err.stack)
+          result = {}
+        }        
+        callback(null, result)
+      })
+    }
+  })
+
+  async.parallel(funcs, cb)
+}
+
 Handler.prototype.clearStats = function(req, session, cb) {
   if (_.isEmpty(req.serverId)) {
     cb(null, {err:'INVALID_PARAM_SERVERID'})
