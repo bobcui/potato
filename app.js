@@ -33,8 +33,15 @@ app.configure(function(){
     // handleCountOnce: 300
   })
 
-  var handlerLogFilter = require('./app/filters/handlerLogFilter')
-  app.filter(handlerLogFilter(app))
+  var Stats = require('./app/utils/stats.js')
+  app.set('handlerStats', new Stats(), true)
+  app.set('rpcStats', new Stats(), true)
+
+  var handlerFilter = require('./app/filters/handlerFilter')
+  app.filter(handlerFilter(app))
+
+  var rpcFilter = require('./app/filters/rpcFilter')
+  app.rpcFilter(rpcFilter(app))
 })
 
 app.configure('all', 'potato', function(){

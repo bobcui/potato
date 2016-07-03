@@ -29,19 +29,29 @@ Filter.prototype.after = function(err, msg, session, resp, next) {
     code: code
   }
 
-  var logString = JSON.stringify(log)
+  var error = 0
+  var warn = 0
+  var logged = 0
+
   if (!!err) {
-    this.logger.error('%s err=%s stack=%j', logString, err, err.stack)
+    error = logged = 1
+    this.logger.error('%s err=%s stack=%j', JSON.stringify(log), err, err.stack)
   }
   else if(!!resp.code) {
-    this.logger.error(logString)
+    error = logged = 1
+    this.logger.error(JSON.stringify(log))
   }
-  else if (timeUsed > this.app.config.get('handlerWarnLogTime')) {
-    this.logger.warn(logString)
+  
+  if (timeUsed > this.app.config.get('handlerWarnLogTime')) {
+    warn = logged = 1
+    this.logger.warn(JSON.stringify(log))
   }
-  else {
-    this.logger.debug(logString)
+
+  if (!logged) {
+    this.logger.debug(JSON.stringify(log))
   }
+
+  this.app.handlerStats.add(msg.__route__, 1, error, warn, timeUsed)
 
   next(err)
 }

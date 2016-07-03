@@ -1,8 +1,11 @@
 {
   "development":  {        
     "sshParams"           : ["-l", "huomao", "-p", "22"],
+
     "handlerWarnLogTime"  : 100,
-    "mysql"      : {
+    "rpcWarnLogTime"      : 100,
+
+    "mysql"     : {
       "host"              : "127.0.0.1",
       "user"              : "root",
       "password"          : "",
