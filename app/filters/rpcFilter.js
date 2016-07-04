@@ -42,5 +42,5 @@ Filter.prototype.after = function(serverId, msg, opts, next) {
       this.app.rpcStats.add(route, 1, error, warn, timeUsed)
     }
   }
-  next();
+  next()
 };
