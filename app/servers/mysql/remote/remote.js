@@ -20,16 +20,3 @@ Remote.prototype.queryMultiValue = function(sql, values, timeout, cb) {
 Remote.prototype.queryMultiSql = function(sqls, cb) {
   common.queryMultiSql(this.mysql, sqls, cb)
 }
-
-Remote.prototype.getInfo = function(req, cb) {
-  cb(null, this.mysql.getInfo())
-}
-
-Remote.prototype.getStats = function(req, cb) {
-  cb(null, this.mysql.getStats())
-}
-
-Remote.prototype.clearStats = function(req, cb) {
-  this.mysql.clearStats()
-  cb(null, true)
-}

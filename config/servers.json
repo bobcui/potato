@@ -27,13 +27,6 @@
         "frontend": true,
         "args": ["--max-old-space-size=8192", "--nouse-idle-notification", "--expose-gc"]        
       }
-    ],
-    "redis": [{
-        "id": "redis-1", 
-        "host": "127.0.0.1",
-        "port": 3030,
-        "args": ["--max-old-space-size=8192", "--nouse-idle-notification", "--expose-gc"]
-      }
     ]
   }
 }

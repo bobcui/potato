@@ -11,8 +11,7 @@ Handler.prototype.getHandlerStats = function(req, session, cb) {
 }
 
 Handler.prototype.resetHandlerStats = function(req, session, cb) {
-  this.app.handlerStats.reset()
-  cb(null, true)
+  cb(null, this.app.handlerStats.reset())
 }
 
 Handler.prototype.getRpcStats = function(req, session, cb) {
@@ -20,6 +19,5 @@ Handler.prototype.getRpcStats = function(req, session, cb) {
 }
 
 Handler.prototype.resetRpcStats = function(req, session, cb) {
-  this.app.rpcStats.reset()
-  cb(null, true)
+  cb(null, this.app.rpcStats.reset())
 }

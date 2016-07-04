@@ -36,6 +36,7 @@ var Stats = function() {
 Stats.prototype.reset = function() {
   this.total = new StatsObject()
   this.entities = {}
+  return true
 }
 
 Stats.prototype.get = function() {

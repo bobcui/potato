@@ -42,7 +42,7 @@ Filter.prototype.after = function(err, msg, session, resp, next) {
     this.logger.error(JSON.stringify(log))
   }
   
-  if (timeUsed > this.app.config.get('handlerWarnLogTime')) {
+  if (timeUsed > this.app.config.get('handler').warnLogTime) {
     warn = logged = 1
     this.logger.warn(JSON.stringify(log))
   }
@@ -51,7 +51,9 @@ Filter.prototype.after = function(err, msg, session, resp, next) {
     this.logger.debug(JSON.stringify(log))
   }
 
-  this.app.handlerStats.add(msg.__route__, 1, error, warn, timeUsed)
+  if (this.app.config.get('handler').needStats) {
+    this.app.handlerStats.add(msg.__route__, 1, error, warn, timeUsed)
+  }
 
   next(err)
 }

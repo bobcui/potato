@@ -2,10 +2,17 @@
   "development":  {        
     "sshParams"           : ["-l", "huomao", "-p", "22"],
 
-    "handlerWarnLogTime"  : 100,
-    "rpcWarnLogTime"      : 100,
+    "handler"             : {
+      "warnLogTime"       : 100,
+      "needStats"         : true
+    },
 
-    "mysql"     : {
+    "rpc"                 : {
+      "warnLogTime"       : 100,
+      "needStats"         : true
+    },
+
+    "mysql"               : {
       "host"              : "127.0.0.1",
       "user"              : "root",
       "password"          : "",
@@ -13,7 +20,8 @@
       "waitForConnections": true,
       "acquireTimeout"    : 200,
       "queryTimeout"      : 500,
-      "queueLimit"        : 0
+      "queueLimit"        : 0,
+      "needStats"         : true
     }
   }
 }

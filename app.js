@@ -33,7 +33,7 @@ app.configure(function(){
     // handleCountOnce: 300
   })
 
-  var Stats = require('./app/utils/stats.js')
+  var Stats = require('./app/utils/stats')
   app.set('handlerStats', new Stats(), true)
   app.set('rpcStats', new Stats(), true)
 
@@ -67,10 +67,6 @@ app.configure('all', 'mysql', function(){
   app.registerBeforeShutdownFunc(function(self, cb){
     self.mysql.fini(cb)
   })
-})
-
-app.configure('all', 'redis', function(){
-  app.set('name', 'redis')
 })
 
 app.start()

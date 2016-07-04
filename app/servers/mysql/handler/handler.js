@@ -21,15 +21,30 @@ Handler.prototype.queryMultiSql = function(req, session, cb) {
   common.queryMultiSql(this.mysql, req.sqls, cb)
 }
 
-Handler.prototype.getInfo = function(req, session, cb) {
+Handler.prototype.getMysqlInfo = function(req, session, cb) {
   cb(null, this.mysql.getInfo())
 }
 
-Handler.prototype.getStats = function(req, session, cb) {
+Handler.prototype.getMysqlStats = function(req, session, cb) {
   cb(null, this.mysql.getStats())
 }
 
-Handler.prototype.clearStats = function(req, session, cb) {
-  this.mysql.clearStats()
-  cb(null, true)
+Handler.prototype.resetMysqlStats = function(req, session, cb) {
+  cb(null, this.mysql.resetStats())
+}
+
+Handler.prototype.getHandlerStats = function(req, session, cb) {
+  cb(null, this.app.handlerStats.get())
+}
+
+Handler.prototype.resetHandlerStats = function(req, session, cb) {
+  cb(null, this.app.handlerStats.reset())
+}
+
+Handler.prototype.getRpcStats = function(req, session, cb) {
+  cb(null, this.app.rpcStats.get())
+}
+
+Handler.prototype.resetRpcStats = function(req, session, cb) {
+  cb(null, this.app.rpcStats.reset())
 }

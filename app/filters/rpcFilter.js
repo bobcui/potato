@@ -29,7 +29,7 @@ Filter.prototype.after = function(serverId, msg, opts, next) {
       timeUsed: timeUsed
     }
 
-    if (timeUsed > this.app.config.get('rpcWarnLogTime')) {
+    if (timeUsed > this.app.config.get('rpc').warnLogTime) {
       warn = logged = 1
       this.logger.warn(JSON.stringify(log))
     }
@@ -38,7 +38,9 @@ Filter.prototype.after = function(serverId, msg, opts, next) {
       this.logger.debug(JSON.stringify(log)) 
     }
 
-    this.app.rpcStats.add(route, 1, error, warn, timeUsed)
+    if (this.app.config.get('rpc').needStats) {
+      this.app.rpcStats.add(route, 1, error, warn, timeUsed)
+    }
   }
   next();
 };
