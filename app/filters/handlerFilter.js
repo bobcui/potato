@@ -55,5 +55,7 @@ Filter.prototype.after = function(err, msg, session, resp, next) {
     this.app.handlerStats.add(msg.__route__, 1, error, warn, timeUsed)
   }
 
+  resp.time = timeUsed
+
   next(err)
 }
