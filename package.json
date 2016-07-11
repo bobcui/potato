@@ -7,7 +7,7 @@
     "url": "https://github.com/bobcui/potato.git"
   },
   "dependencies":{
-    "pomelo": "https://github.com/bobcui/pomelo.git#v1.2.3",
+    "pomelo": "https://github.com/bobcui/pomelo.git",
     "pomelo-logger": "https://github.com/bobcui/pomelo-logger.git",
     "mysql": "~2.11.1",
     "lodash": "~4.13.1",

@@ -24,7 +24,8 @@ StatsObject.prototype.add = function(count, error, warn, timeUse) {
   }
 }
 
-StatsObject.prototype.calculateTimeAve = function() {
+StatsObject.prototype.calculate = function() {
+  this.runTime = Date.now() - this.createTime
   this.timeAve = Math.round(this.timeTotal / this.count) || 0
 }
 
@@ -40,9 +41,9 @@ Stats.prototype.reset = function() {
 }
 
 Stats.prototype.get = function() {
-  this.total.calculateTimeAve()
+  this.total.calculate()
   _.each(this.entities, function(entity){
-    entity.calculateTimeAve()
+    entity.calculate()
   })
   return this
 }
