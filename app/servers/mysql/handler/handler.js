@@ -10,6 +10,8 @@ var Handler = function(app) {
 }
 
 Handler.prototype.query = function(req, session, cb) {
+  cb(null, {})
+  return
   common.query(this.mysql, req.sql, req.values, req.timeout, cb)
 }
 

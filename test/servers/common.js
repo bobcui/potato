@@ -1,13 +1,17 @@
 var http = require('http')
 
+module.exports.log = true
+
 module.exports.makeHttpRequest = function(host, port, route, body, cb) {
   var req = http.request({
     hostname: host,
     port: port,
-    method: 'POST'
+    method: 'POST',
   }, function(res){
     res.on('data', function(body) {
-      console.log('res: ' + body)
+      if (module.exports.log) {
+        console.log('res: ' + body)
+      }
       if (!!cb) {
         cb(null)
       }
@@ -15,7 +19,9 @@ module.exports.makeHttpRequest = function(host, port, route, body, cb) {
   })
 
   req.on('error', function(e) {
-    console.log('problem with request: ' + e.message)
+    if (1||module.exports.log) {
+      console.log('problem with request: ' + e.message)
+    }
     if (!!cb) {
       cb(new Error())
     }
@@ -27,7 +33,9 @@ module.exports.makeHttpRequest = function(host, port, route, body, cb) {
     body: body
   })
 
-  console.log('req: ' + reqBody)
+  if (module.exports.log) {
+    console.log('req: ' + reqBody)
+  }
   req.write(reqBody)
 
   req.end()

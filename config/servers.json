@@ -7,7 +7,7 @@
         "clientHost": "0.0.0.0",
         "clientPort": 13010, 
         "frontend": true,
-        "args": ["--max-old-space-size=2048", "--nouse-idle-notification", "--expose-gc", "--debug=5858"]
+        "args": ["--max-old-space-size=8192", "--nouse-idle-notification", "--expose-gc", "--debug=5858"]
       }
     ],
     "mysql": [{

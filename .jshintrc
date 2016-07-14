@@ -10,5 +10,6 @@
   "trailing": true,
   "smarttabs": true,
   "noarg": true,
-  "asi": true
+  "asi": true,
+  "esversion":6
 }

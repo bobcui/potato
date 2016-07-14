@@ -1,6 +1,6 @@
 #!/bin/bash
 
-npm install -V
+npm install --verbose
 
 rm -rf ./node_modules/pomelo/node_modules/pomelo-admin/node_modules/pomelo-logger
 rm -rf ./node_modules/pomelo/node_modules/pomelo-logger

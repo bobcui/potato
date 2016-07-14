@@ -8,6 +8,12 @@ app.configure(function(){
     config.fini(cb)
   })
 
+  var gc = require('./app/utils/gc')
+  gc.init(config)
+  app.registerBeforeShutdownFunc(function(self, cb){
+    gc.fini(cb)
+  })
+
   app.set('config', config, true)
   app.set('ssh_config_params', config.get('sshParams'))
 

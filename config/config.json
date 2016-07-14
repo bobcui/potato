@@ -22,6 +22,12 @@
       "queryTimeout"      : 500,
       "queueLimit"        : 0,
       "needStats"         : true
+    },
+
+    "gc"                  : {
+      "threshold"         : 10485760000,
+      "warnLogTime"       : 100,
+      "checkSec"          : 1
     }
   }
 }

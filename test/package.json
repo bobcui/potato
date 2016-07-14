@@ -1,9 +1,10 @@
 {
-  "name":"potato-test",
-  "version":"0.0.1",
-  "private":false,
-  "dependencies":{
+  "name": "potato-test",
+  "version": "0.0.1",
+  "private": false,
+  "dependencies": {
+    "async": "~1.5.2",
     "optimist": "~0.6.1",
-    "async": "~1.5.2"
+    "usage": "^0.7.1"
   }
 }
